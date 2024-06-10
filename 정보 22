@@ -1,0 +1,36 @@
+const xlsx = require('xlsx');
+
+function print_genotype(header, rowValue) {
+  var maxLength = Math.max(header.length, rowValue.length);
+  var result = '';
+  for (var i = 0; i < maxLength; i++) {
+    if (i < header.length) {
+      result += header.charAt(i);
+    }
+    if (i < rowValue.length) {
+      result += rowValue.charAt(i);
+    }
+  }
+  return result;
+}
+
+// 예제 데이터
+const header = "ABCD";
+const rowValue = "1234";
+const result = print_genotype(header, rowValue);
+
+// Excel 워크북 생성
+const wb = xlsx.utils.book_new();
+const wsData = [
+  ["Header", "RowValue", "Result"],
+  [header, rowValue, result]
+];
+
+// 워크시트 추가
+const ws = xlsx.utils.aoa_to_sheet(wsData);
+xlsx.utils.book_append_sheet(wb, ws, "Sheet1");
+
+// Excel 파일 작성
+xlsx.writeFile(wb, 'genotype.xlsx');
+
+console.log('Excel file has been created.');
